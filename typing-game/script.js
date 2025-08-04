@@ -28,6 +28,7 @@ let justSkippedWord = false;
 let startTime = 0;
 let timerInterval;
 let currentTime = "";
+let inputCount = 0;
 
 const startButton = document.getElementById("start-button1");
 const resetButton = document.getElementById("reset-button1");
@@ -67,6 +68,8 @@ startButton.addEventListener("click", () => {
           // Initialize the text area with the cursor
           document.getElementById("text-para1").innerHTML =
             renderTextWithCursor(resultText, 0);
+          document.getElementById("text-para1").style.color =
+            "rgb(145, 125, 125)";
           started = true;
           startElapsedTime();
         }
@@ -82,13 +85,22 @@ resetButton.addEventListener("click", () => {
   document.getElementById("text-para1").innerText =
     'Click "START" to begin the game';
   document.getElementById("input-area1").value = "";
-  cursorIndex = 0;
-  correctFlag = 0;
-  started = false;
 
   document.querySelectorAll(".action-button").forEach((button) => {
     button.classList.toggle("hidden");
   });
+  document.getElementById("text-para1").style.color = "rgb(145, 125, 125)";
+    started = false;
+    justSkippedWord = false;
+    correctFlag = false;
+    elapsed = 0;
+    inputCount = 0;
+    currentTime = "";
+    
+    document.getElementById("text-para1").style.fontSize = "24px";
+
+    stopElapsedTime();
+document.getElementById("timer1").textContent = "00:00:00";
 });
 
 function startElapsedTime() {
@@ -117,9 +129,23 @@ document.addEventListener("keydown", (event) => {
   const key = event.key;
   const cursorPos = inputArea.value.length;
 
+  try {
+    const keyElement = document.querySelector("#key-" + key.toLowerCase());
+    if (keyElement) {
+      keyElement.classList.add("scaled");
+    }
+  } catch (error) {
+    console.error("Error selecting key element:", error);
+  }
+
   // Prevent Ctrl+Backspace
   if (event.key === "Backspace" && event.ctrlKey) {
     event.preventDefault();
+    return;
+  }
+
+  if (event.key === "Shift" || event.key === "Control") {
+    console.log("Shift or Control key pressed, ignoring.");
     return;
   }
 
@@ -157,27 +183,41 @@ document.addEventListener("keydown", (event) => {
 
   // Strictly allow only the correct character
   if (key !== resultText[cursorPos]) {
+    inputCount++;
     event.preventDefault();
     return;
   }
 
   // If you want to handle the period at the end
   if (key === "." && cursorPos === resultText.length - 1) {
+    inputCount++;
     document.getElementById(
       "text-para1"
-    ).innerText = `Congratulations, you finished within ${currentTime}!`;
+    ).innerHTML = `Congratulations, you finished within <b>[${currentTime}]</b> with <b>[${(
+      (resultText.length / inputCount) *
+      100
+    ).toFixed(2)}%]</b> accuracy!`;
+
+    document.getElementById("text-para1").style.color = "white";
     inputArea.value = "";
     started = false;
     justSkippedWord = false;
     correctFlag = false;
-    elapsed = 0; // Reset elapsed time
+    elapsed = 0;
+    inputCount = 0;
+    currentTime = "";
+    
+    document.getElementById("text-para1").style.fontSize = "24px";
+
     stopElapsedTime();
+document.getElementById("timer1").textContent = "00:00:00";
     event.preventDefault();
     return;
   }
-
+  inputCount++;
+  console.log("Input Count:", inputCount);
   // Allow input and update cursor after input
-  setTimeout(() => {    
+  setTimeout(() => {
     document.getElementById("text-para1").innerHTML = renderTextWithCursor(
       resultText,
       inputArea.value.length
@@ -195,8 +235,8 @@ document.addEventListener("keyup", (event) => {
 });
 
 function renderTextWithCursor(text, cursorPos) {
-  const before = text.slice(0, cursorPos);  //texts before the cursor
-  const at = text[cursorPos] ? text[cursorPos] : "";    // character at the cursor position
-  const after = text.slice(cursorPos + 1);  // texts after the cursor
-  return `<span class='typed-ch'> ${before}</span><span class="cursor"></span>${at}${after}`;
+  const before = text.slice(0, cursorPos); //texts before the cursor
+  const at = text[cursorPos] ? text[cursorPos] : ""; // character at the cursor position
+  const after = text.slice(cursorPos + 1); // texts after the cursor
+  return `<span class='typed-ch'>${before}</span><span class="cursor"></span>${at}${after}`;
 }

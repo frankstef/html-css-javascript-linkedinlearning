@@ -37,6 +37,7 @@ body {
     height: min-content;
     padding: 20px;
     border: solid 1px white;
+    overflow: auto;
 }
 
 .text-container p {
