@@ -164,8 +164,12 @@ button {
   display: inline-block;
   width: 2px;
   height: 1em;
-  background: black;
+  background: #86a0b8;
   vertical-align: middle;
-  animation: blink 1s steps(2, start) infinite;
+  /* animation: blink 1s steps(2, start) infinite; */
+}
+
+.typed-ch {
+  color: white;
 }
 

@@ -198,5 +198,5 @@ function renderTextWithCursor(text, cursorPos) {
   const before = text.slice(0, cursorPos);  //texts before the cursor
   const at = text[cursorPos] ? text[cursorPos] : "";    // character at the cursor position
   const after = text.slice(cursorPos + 1);  // texts after the cursor
-  return `${before}<span class="cursor"></span>${at}${after}`;
+  return `<span class='typed-ch'> ${before}</span><span class="cursor"></span>${at}${after}`;
 }
