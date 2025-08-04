@@ -160,3 +160,12 @@ button {
     transition: transform 0.1s ease-in-out;
 }
 
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: black;
+  vertical-align: middle;
+  animation: blink 1s steps(2, start) infinite;
+}
+
