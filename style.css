@@ -18,20 +18,23 @@ body {
     flex-direction: row;
     /* height: 200px;. */
     width: 100%;
-    position: absolute;
-    bottom: 50px;
+    /* position: absolute; */
+    /* bottom: 50px; */
     align-items: center;
     justify-content: center;
     gap: 50px;
     animation: slide-up 1s ease-in-out;
+   position: fixed;
+    bottom: 0;
+    left: 0;
+    /* ...other styles... */
+    z-index: 10;
 }
 
 .note-holder {
-    /* align-items: center; */
-    /* justify-content: center; */
+    position: absolute;
     height: 200px;
     width: 200px;
-    position:absolute
 }
 
 .note-holder:hover {
@@ -41,14 +44,32 @@ body {
 
 #note1 {
     background-color: yellow;
+    position: static; /* Templates stay in flex row */
+    cursor: copy;
+    z-index: 2;
 }
 
 #note2 {
     background-color: orange;
+    position: static; /* Templates stay in flex row */
+    cursor: copy;
+    z-index: 2;
 }
 
 #note3 {
     background-color: purple;
+    position: static; /* Templates stay in flex row */
+    cursor: copy;
+    z-index: 2;
+}
+
+#trashcan1 {
+    position: fixed;
+    /* bottom: 20px;
+    right: 20px; */
+    width: 7%;
+    height: 5%;
+    cursor: pointer;
 }
 
 
